@@ -37,9 +37,8 @@ class cam:
         time.sleep(secs)
         self.cam.stop_recording()
 
-    def take_picture(self):
-        timestamp = str(datetime.now())
-        self.cam.capture(timestamp)
+    def take_picture(self,name):
+        self.cam.capture(name)
 
     def make_gif(self, filenames):
         images = []
