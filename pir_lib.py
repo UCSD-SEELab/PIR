@@ -14,20 +14,17 @@ class pir:
             wp.pinMode(pir, 0) # input
 
     def read_pir(self):
-        ans = {}
         values = []
         for pir in self.pin_pir:
             values.append(wp.digitalRead(pir))
-        ans["values"] = values
-        ans["timestamp"] = str(datetime.now())
-        return ans
+        return values
 
 class cam:
     def __init__(self):
         self.cam = PiCamera()
         self.cam.framerate = 24
-        self.cam.rotation = 270
-        self.cam.resolution = (640, 480)
+        self.cam.rotation = 180
+        self.cam.resolution = (1640, 922)
         time.sleep(0.1)
 
     def record_video(self,secs):
@@ -40,16 +37,20 @@ class cam:
     def take_picture(self,name):
         self.cam.capture(name)
 
-    def make_gif(self, filenames):
+    def make_gif(self, filenames, save_name):
         images = []
         for filename in filenames:
             images.append(imageio.imread(filename))
-        imageio.mimsave(filenames[0]+".gif",images)
+        imageio.mimsave(save_name,images)
 
 
 if __name__ == "__main__":
     pir = pir([23,24,25,27,22])
     cam = cam()
 
-    if not np.all(pir.read_pir()["values"] == [0, 0, 0, 0, 0]):
-        cam.take_picture()
+    while True:
+        if not np.all(pir.read_pir() == [0, 0, 0, 0, 0]):
+            timestamp = str(datetime.now())
+            cam.take_picture("/picture/"+timestamp+".png")
+            print pir.read_pir()
+            time.sleep(0.3)

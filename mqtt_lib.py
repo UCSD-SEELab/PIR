@@ -29,12 +29,6 @@ def publish_pir_mqtt(name,topic,broker_address,payload):
     print("creating new instance: ",name)
     client.connect(broker_address)
     print("connecting to broker: ",broker_address)
-
-    # client.loop_start()
-    # client.subscribe("living_room/pir")
-    # print("subscribing to topic","living_room/pir")
-    # publish(topic, payload=None, qos=0, retain=False)
     client.publish(topic, json.dumps(payload))
     print("publishing message to topic: ",topic)
-    # time.sleep(4)
-    # client.loop_stop()
+
