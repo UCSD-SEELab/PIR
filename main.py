@@ -20,7 +20,7 @@ def collect_samples(pir,cam,secs_duration, refresh_rate):
 	cam.take_picture(str(index)+".jpg")
         filenames.append(str(index)+".jpg")
         index += 1
-        time.sleep(0.3)
+        time.sleep(refresh_rate)
     
     fh = open("pir.txt","a")
     fh.write(timestamp+"|"+",".join(map(str,pir_values))+"\n")
