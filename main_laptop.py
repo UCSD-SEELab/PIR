@@ -1,5 +1,5 @@
 # this is a test
-from mqtt_lib import subscribe
+
 import paho.mqtt.client as mqtt
 import time
 

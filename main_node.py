@@ -1,5 +1,5 @@
 # this is a test
-from mqtt_lib import publish
+
 from datetime import datetime
 import time
 import paho.mqtt.client as mqtt
