@@ -13,28 +13,33 @@ def collect_samples(pir,cam, cycle, refresh_rate):
     start_time = datetime.now()
     timestamp = str(start_time)
     pir_values = []
+
     filenames = []
     index = 0
     for _ in range(cycle):
         pir_values.extend(pir.read_pir())
-        cam.take_picture(str(index) + ".jpg")
-        filenames.append(str(index) + ".jpg")
-        index += 1
+        if cam!=None:
+            cam.take_picture(str(index) + ".jpg")
+            filenames.append(str(index) + ".jpg")
+            index += 1
 
         time.sleep(refresh_rate)
+
+    if cam!=None:
+        print("make gif")
+        cam.make_gif(filenames, timestamp + ".gif")
     
     fh = open("pir.txt","a")
     fh.write(timestamp+"|"+",".join(map(str,pir_values))+"\n")
     fh.close()
 
-    print("make gif")
-    cam.make_gif(filenames, timestamp + ".gif")
     return {"values": pir_values, "timestamp": timestamp}
 
 
 if __name__ == "__main__":
     pir = pir([23, 24, 25, 27, 22])
-    cam = cam()
+    # cam = cam()
+    cam = None
     cycle = 6
     refresh_rate = 0.3
 
@@ -50,4 +55,7 @@ if __name__ == "__main__":
             payload = json.dumps(ans)
             client.publish(topic, payload, qos=0, retain=False)
             print("publishing " + payload)
+        else:
+            time.sleep(refresh_rate)
+
 
