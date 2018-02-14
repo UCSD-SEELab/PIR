@@ -14,6 +14,6 @@ if __name__ == "__main__":
     client.connect(broker_address, 1883, 60)
     while True:
         payload = json.dumps(str(datetime.now()))
-        client.publish(topic, json.dumps(payload), qos=0, retain=False)
+        client.publish(topic, payload, qos=0, retain=False)
         print("publishing "+payload)
         time.sleep(1)
