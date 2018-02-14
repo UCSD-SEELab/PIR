@@ -50,6 +50,4 @@ if __name__ == "__main__":
             payload = json.dumps(ans)
             client.publish(topic, payload, qos=0, retain=False)
             print("publishing " + payload)
-        else:
-            time.sleep(refresh_rate)
-            print("idle")
+
