@@ -1,7 +1,23 @@
 # this is a test
-from mqtt_lib import publish_pir_mqtt, subscribe
+from mqtt_lib import subscribe
+import paho.mqtt.client as mqtt
+import time
 
+
+def on_message(client, userdata, message):
+    print(message.topic + " " + str(message.payload))
 
 if __name__ == "__main__":
+    name = "laptop"
+    topic = "tAxiY7W4P58QH5Oq/living_room/pir"
+    broker_address = "iot.eclipse.org"
+    client = mqtt.Client(name)
+    client.on_message = on_message
+    client.connect(broker_address, 1883, 60)
+
+    client.subscribe(topic,qos=0)
+
     while True:
-        subscribe("laptop", "tAxiY7W4P58QH5Ow/living_room/pir", "iot.eclipse.org")
+        client.loop_start()
+        time.sleep(1)
+        client.loop_stop()
