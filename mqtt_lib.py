@@ -12,14 +12,11 @@ def on_message(client, userdata, message):
 
 def subscribe(name,topic,broker_address):
     client = mqtt.Client(name)
-    print("creating new instance: ",name)
     client.on_message = on_message
     client.connect(broker_address)
-    print("connecting to broker: ",broker_address)
 
     client.loop_start()
     client.subscribe(topic)
-    print("subscribing to topic: ",topic)
     time.sleep(4)
     client.loop_stop()
 
