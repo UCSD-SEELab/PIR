@@ -5,21 +5,32 @@ import time
 import json
 from simplecrypt import encrypt, decrypt
 import pickle
+import numpy as np
 from sklearn.cluster import KMeans
 
+
 def on_message(client, userdata, message):
-    fh = open("data_no_cam_laptop_client.txt","a")
+    fh = open("new_masked_data_no_cam_laptop_client.txt","a")
     fh.write(message.payload+"\n")
     fh.close()
-    #global mqtt_data
-    #mqtt_data = json.loads(message.payload)
-    print(message.topic + " " + str(message.payload))
+    global mqtt_data,receive_msg
+    mqtt_data = json.loads(message.payload)
+    receive_msg = True
+    # print(message.topic + " " + str(message.payload))
 
 if __name__ == "__main__":
     with open("kmeans","rb") as sf:
         kmeans = pickle.load(sf)
 
-    mqtt_data = ''
+    with open("GaussianMixture","rb") as sf2:
+        clusterer = pickle.load(sf2)
+
+    with open("PCA","rb") as sf3:
+        pca = pickle.load(sf3)
+
+    mqtt_data = ""
+    receive_msg = False
+
     name = "laptop"
     topic = "tAxiY7W4P58QH5Oq/living_room/pir"
     broker_address = "iot.eclipse.org"
@@ -31,5 +42,12 @@ if __name__ == "__main__":
 
     while True:
         client.loop_start()
+        if receive_msg:
+            receive_msg = False
+            raw = map(int,mqtt_data["values"])
+            # X = [[raw[i]+raw[i+5]+raw[i+10]+raw[i+15]+raw[i+20]+raw[i+25] for i in range(5)]]
+            X = pca.transform([raw])
+            y = clusterer.predict(X)
+            print mqtt_data["timestamp"]+" predict: "+str(y)
         time.sleep(1)
         client.loop_stop()
