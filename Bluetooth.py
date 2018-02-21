@@ -36,9 +36,3 @@ def bluetooth_rssi(addr):
 
     except:
         return None
-
-addr = '9C:F3:87:42:5C:32'
-while True:
-    rssi = bluetooth_rssi(addr)
-    print rssi
-    time.sleep(0.1)
