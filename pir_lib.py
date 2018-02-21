@@ -5,7 +5,6 @@ import time
 from picamera import PiCamera
 import imageio
 
-
 class pir:
     def __init__(self, pin_pir):
         self.pin_pir = pin_pir
