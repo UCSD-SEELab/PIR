@@ -48,8 +48,6 @@ if __name__ == "__main__":
     with open("decomposition", "rb") as sf2:
         ica = pickle.load(sf2)
 
-    labels1 = ['oven', 'oven', 'sink', 'bed', 'bed', 'hall', 'hall', 'table', 'table']
-    labels2 = ['oven', 'oven', 'sink', 'bed', 'bed', 'hall', 'hall', 'table', 'table']
     mqtt_data = ""
     receive_msg = False
 
